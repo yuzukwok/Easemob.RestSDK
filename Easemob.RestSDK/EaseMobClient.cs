@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 
 namespace Easemob.RestSDK
 {
-   public class EaseMobClient: IEaseMobApi
+    public class EaseMobClient : IEaseMobApi
     {
         string reqUrlFormat = "https://a1.easemob.com/{0}/{1}/";
         public string clientID { get; set; }
@@ -32,34 +32,34 @@ namespace Easemob.RestSDK
         /// <param name="easeAppClientSecret">client_secret</param>
         /// <param name="easeAppName">应用标识之应用名称</param>
         /// <param name="easeAppOrgName">应用标识之登录账号</param>
-        public  EaseMobClient(string easeAppClientID, string easeAppClientSecret, string easeAppName, string easeAppOrgName)
+        public EaseMobClient(string easeAppClientID, string easeAppClientSecret, string easeAppName, string easeAppOrgName)
         {
             this.clientID = easeAppClientID;
             this.clientSecret = easeAppClientSecret;
             this.appName = easeAppName;
-            this.orgName = easeAppOrgName;           
+            this.orgName = easeAppOrgName;
             this.client = new RestClient(easeMobUrl);
             this.client.RemoveHandler("application/json");
             this.client.AddHandler("application/json", new JsonNetDeserializer());
-           
+
 
         }
 
         public async Task<T> ExecuteAsync<T>(RestRequest request) where T : new()
-        {            
+        {
             var token = await QueryToken();
             request.AddHeader("Authorization", "Bearer " + token);
-            var response =await client.ExecuteTaskAsync<T>(request);
+            var response = await client.ExecuteTaskAsync<T>(request);
             if (response.ErrorException != null)
             {
                 const string message = "Error retrieving response.  Check inner details for more info.";
                 var twilioException = new EasemobApiException(message, response.ErrorException);
                 throw twilioException;
             }
-            if (response.StatusCode== System.Net.HttpStatusCode.BadRequest)
+            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
             {
                 var error = JsonConvert.DeserializeObject<ErrorOutput>(response.Content);
-                var twilioException = new EasemobApiException(error.error+"|"+error.error_description);
+                var twilioException = new EasemobApiException(error.error + "|" + error.error_description);
                 throw twilioException;
             }
 
@@ -74,7 +74,7 @@ namespace Easemob.RestSDK
         {
             if (string.IsNullOrEmpty(clientID) || string.IsNullOrEmpty(clientSecret)) { return string.Empty; }
             //read cache
-            
+
             if (!cache.Contains("token"))
             {
                 RestRequest req = new RestRequest("token", Method.POST);
@@ -97,14 +97,14 @@ namespace Easemob.RestSDK
             return retoken.ToString();
         }
 
-        public async Task<EaseApiResult> RegisterIMUsers(IList<UserReg> input)
+        public async Task<EaseApiResult> CreateUserBatch(IList<UserReg> input)
         {
             var req = new RestRequest("users", Method.POST);
             req.AddJsonBody(input);
             return await ExecuteAsync<EaseApiResult>(req);
         }
 
-        public async Task<EaseApiResult> RegisterIMUser(UserReg input)
+        public async Task<EaseApiResult> CreateUser(UserReg input)
         {
             var req = new RestRequest("users", Method.POST);
             req.AddJsonBody(input);
@@ -118,11 +118,127 @@ namespace Easemob.RestSDK
             return await ExecuteAsync<CreateChatRoomOutput>(req);
         }
 
-        public async Task<EaseApiResult> ChangeIMUserNickname(string username, ChangeIMUserNicknameInput input)
+        public async Task<EaseApiResult> ChangeUserNickname(string username, ChangeIMUserNicknameInput input)
         {
-            var req = new RestRequest("users/"+username, Method.PUT);
+            var req = new RestRequest("users/" + username, Method.PUT);
             req.AddJsonBody(input);
             return await ExecuteAsync<EaseApiResult>(req);
+        }
+
+        public async Task<EaseApiResult> GetUser(string username)
+        {
+            var req = new RestRequest("users/" + username, Method.GET);
+            return await ExecuteAsync<EaseApiResult>(req);
+        }
+
+        public async Task<EaseApiResult> GetUserList(string username,string cursor="", int limit = 10)
+        {
+            var req = new RestRequest("users", Method.GET);
+            req.AddQueryParameter("limit", limit.ToString());
+            if (!string.IsNullOrEmpty(cursor))
+            {
+                req.AddQueryParameter("cursor", cursor);
+            }
+            return await ExecuteAsync<EaseApiResult>(req);
+        }
+
+        public async Task<EaseApiResult> DelUser(string username)
+        {
+            var req = new RestRequest("users/" + username, Method.DELETE);
+            return await ExecuteAsync<EaseApiResult>(req);
+        }
+
+        public async Task<EaseApiResult> DelUserBatch(int limit)
+        {
+            var req = new RestRequest("users", Method.DELETE);
+            req.AddQueryParameter("limit", limit.ToString());
+          
+            return await ExecuteAsync<EaseApiResult>(req);
+        }
+
+        public async Task<EaseApiResult> ChangeUserPassword(string username, ChangeUserPasswordInput input)
+        {
+            var req = new RestRequest("users/" + username+"/password", Method.PUT);
+            return await ExecuteAsync<EaseApiResult>(req);
+        }
+
+        public async Task<EaseApiResult> AddBuddy(string ownerusername, string friendusername)
+        {
+            var req = new RestRequest("users/" + ownerusername + "/contacts/users/"+friendusername, Method.PUT);
+            return await ExecuteAsync<EaseApiResult>(req);
+        }
+        public async Task<EaseApiResult> DelBuddy(string ownerusername, string friendusername)
+        {
+            var req = new RestRequest("users/" + ownerusername + "/contacts/users/" + friendusername, Method.DELETE);
+            return await ExecuteAsync<EaseApiResult>(req);
+        }
+
+        public async Task<EaseApiResultData> GetBuddys(string ownerusename)
+        {
+            var req = new RestRequest("users/" + ownerusename + "/contacts/users", Method.GET);
+            return await ExecuteAsync<EaseApiResultData>(req);
+        }
+
+        public async Task<EaseApiResultData> GetBuddyInBlackList(string ownerusename)
+        {
+            var req = new RestRequest("users/" + ownerusename + "/blocks/users", Method.GET);
+            return await ExecuteAsync<EaseApiResultData>(req);
+        }
+
+        public async Task<EaseApiResultData> AddBuddyInBlackList(string ownerusername, AddBuddyInBlackListInput input)
+        {
+            var req = new RestRequest("users/" + ownerusername + "/blocks/users", Method.POST);
+            req.AddJsonBody(input);
+            return await ExecuteAsync<EaseApiResultData>(req);
+        }
+
+        public async Task<EaseApiResult> DelBuddyInBlackList(string ownerusername, string username)
+        {
+            var req = new RestRequest("users/" + ownerusername + "/blocks/users/"+username, Method.DELETE);
+        
+            return await ExecuteAsync<EaseApiResult>(req);
+        }
+
+        public async Task<EaseApiResultKvData> CheckUserStatus(string username)
+        {
+            var req = new RestRequest("users/" + username + "/status", Method.GET);
+
+            return await ExecuteAsync<EaseApiResultKvData>(req);
+        }
+
+        public async Task<EaseApiResultKvData> CheckUserOfflineMsgCount(string username)
+        {
+            var req = new RestRequest("users/" + username + "/offline_msg_count", Method.GET);
+
+            return await ExecuteAsync<EaseApiResultKvData>(req);
+        }
+
+        public async Task<EaseApiResultKvData> CheckUserOfflineMsgStatus(string username, string msgid)
+        {
+            var req = new RestRequest("users/" + username + "/offline_msg_status/"+msgid, Method.POST);
+
+            return await ExecuteAsync<EaseApiResultKvData>(req);
+        }
+
+        public async Task<EaseApiResult> DeactivateUser(string username)
+        {
+            var req = new RestRequest("users/" + username + "/deactivate", Method.POST);
+
+            return await ExecuteAsync<EaseApiResult>(req);
+        }
+
+        public async Task<EaseApiResult> ActivateUser(string username)
+        {
+            var req = new RestRequest("users/" + username + "/activate", Method.POST);
+
+            return await ExecuteAsync<EaseApiResult>(req);
+        }
+
+        public async Task<EaseApiResultKvData> DisconnectUser(string username)
+        {
+            var req = new RestRequest("users/" + username + "/disconnect", Method.GET);
+
+            return await ExecuteAsync<EaseApiResultKvData>(req);
         }
     }
 }

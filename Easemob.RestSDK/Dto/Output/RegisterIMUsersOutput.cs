@@ -7,7 +7,14 @@ using System.Threading.Tasks;
 namespace Easemob.RestSDK.Dto.Output
 {
 
-
+    public class EaseApiResultData : EaseApiResult
+    {
+        public string[] data { get; set; }
+    }
+    public class EaseApiResultKvData : EaseApiResult
+    {
+        public IDictionary<string,string> data { get; set; }
+    }
     public class EaseApiResult
     {
         public string action { get; set; }
@@ -20,10 +27,13 @@ namespace Easemob.RestSDK.Dto.Output
         public int duration { get; set; }
         public string organization { get; set; }
         public string applicationName { get; set; }
+        public string cursor { get; set; }
+        public int count { get; set; }
     }
 
     public class Params
     {
+        string[] limit;
     }
 
     public class Entity
