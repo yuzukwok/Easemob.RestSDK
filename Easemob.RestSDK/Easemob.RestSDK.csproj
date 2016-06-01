@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dto\Input\ChangeIMUserNicknameInput.cs" />
     <Compile Include="Dto\Input\CreateChatRoomInput.cs" />
     <Compile Include="Dto\Input\LoginModel.cs" />
     <Compile Include="Dto\Input\RegisterIMUserInput.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="EaseMobClient.cs" />
     <Compile Include="Exception\EasemobApiException.cs" />
     <Compile Include="Interface\EaseMobApi.cs" />
+    <Compile Include="JsonNetDeserializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

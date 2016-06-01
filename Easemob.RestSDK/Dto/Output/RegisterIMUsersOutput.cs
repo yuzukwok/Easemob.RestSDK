@@ -8,7 +8,7 @@ namespace Easemob.RestSDK.Dto.Output
 {
 
 
-    public class RegisterIMUsersOutput
+    public class EaseApiResult
     {
         public string action { get; set; }
         public string application { get; set; }
@@ -34,6 +34,8 @@ namespace Easemob.RestSDK.Dto.Output
         public long modified { get; set; }
         public string username { get; set; }
         public bool activated { get; set; }
+        public string device_token { get; set; }
+        public string nickname { get; set; }
     }
 
 

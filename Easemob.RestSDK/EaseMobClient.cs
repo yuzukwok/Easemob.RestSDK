@@ -39,7 +39,10 @@ namespace Easemob.RestSDK
             this.appName = easeAppName;
             this.orgName = easeAppOrgName;           
             this.client = new RestClient(easeMobUrl);
-            
+            this.client.RemoveHandler("application/json");
+            this.client.AddHandler("application/json", new JsonNetDeserializer());
+           
+
         }
 
         public async Task<T> ExecuteAsync<T>(RestRequest request) where T : new()
@@ -94,18 +97,18 @@ namespace Easemob.RestSDK
             return retoken.ToString();
         }
 
-        public async Task<RegisterIMUsersOutput> RegisterIMUsers(IList<UserReg> input)
+        public async Task<EaseApiResult> RegisterIMUsers(IList<UserReg> input)
         {
             var req = new RestRequest("users", Method.POST);
             req.AddJsonBody(input);
-            return await ExecuteAsync<RegisterIMUsersOutput>(req);
+            return await ExecuteAsync<EaseApiResult>(req);
         }
 
-        public async Task<RegisterIMUsersOutput> RegisterIMUser(UserReg input)
+        public async Task<EaseApiResult> RegisterIMUser(UserReg input)
         {
             var req = new RestRequest("users", Method.POST);
             req.AddJsonBody(input);
-            return await ExecuteAsync<RegisterIMUsersOutput>(req);
+            return await ExecuteAsync<EaseApiResult>(req);
         }
 
         public async Task<CreateChatRoomOutput> CreateChatRoom(CreateChatRoomInput input)
@@ -113,6 +116,13 @@ namespace Easemob.RestSDK
             var req = new RestRequest("chatrooms", Method.POST);
             req.AddJsonBody(input);
             return await ExecuteAsync<CreateChatRoomOutput>(req);
+        }
+
+        public async Task<EaseApiResult> ChangeIMUserNickname(string username, ChangeIMUserNicknameInput input)
+        {
+            var req = new RestRequest("users/"+username, Method.PUT);
+            req.AddJsonBody(input);
+            return await ExecuteAsync<EaseApiResult>(req);
         }
     }
 }

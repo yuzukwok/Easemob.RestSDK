@@ -10,9 +10,11 @@ namespace Easemob.RestSDK.Interface
 {
     public interface IEaseMobApi
     {
-        Task<RegisterIMUsersOutput> RegisterIMUsers(IList<UserReg> input);
+        Task<EaseApiResult> RegisterIMUsers(IList<UserReg> input);
 
-        Task<RegisterIMUsersOutput> RegisterIMUser(UserReg input);
+        Task<EaseApiResult> RegisterIMUser(UserReg input);
+
+        Task<EaseApiResult> ChangeIMUserNickname(string username, ChangeIMUserNicknameInput input);
 
         Task<CreateChatRoomOutput> CreateChatRoom(CreateChatRoomInput input);
     }
