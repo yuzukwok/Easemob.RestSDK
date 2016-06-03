@@ -147,6 +147,12 @@ namespace Easemob.RestSDK.Interface
         /// <param name="username"></param>
         /// <returns></returns>
         Task<EaseApiResultKvData> DisconnectUser(string username);
+        /// <summary>
+        ///  创建群聊
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        Task<EaseApiResultKvData> CreateChatGroup(CreateChatGroupInput input);
 
         Task<CreateChatRoomOutput> CreateChatRoom(CreateChatRoomInput input);
     }

@@ -56,7 +56,7 @@ namespace Easemob.RestSDK
                 var twilioException = new EasemobApiException(message, response.ErrorException);
                 throw twilioException;
             }
-            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest|| response.StatusCode== System.Net.HttpStatusCode.NotFound)
             {
                 var error = JsonConvert.DeserializeObject<ErrorOutput>(response.Content);
                 var twilioException = new EasemobApiException(error.error + "|" + error.error_description);
@@ -238,6 +238,13 @@ namespace Easemob.RestSDK
         {
             var req = new RestRequest("users/" + username + "/disconnect", Method.GET);
 
+            return await ExecuteAsync<EaseApiResultKvData>(req);
+        }
+
+        public async Task<EaseApiResultKvData> CreateChatGroup(CreateChatGroupInput input)
+        {
+            var req = new RestRequest("chatgroups" , Method.POST);
+            req.AddJsonBody(input);
             return await ExecuteAsync<EaseApiResultKvData>(req);
         }
     }
