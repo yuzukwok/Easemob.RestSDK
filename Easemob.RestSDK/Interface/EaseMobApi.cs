@@ -155,5 +155,12 @@ namespace Easemob.RestSDK.Interface
         Task<EaseApiResultKvData> CreateChatGroup(CreateChatGroupInput input);
 
         Task<CreateChatRoomOutput> CreateChatRoom(CreateChatRoomInput input);
+        /// <summary>
+        /// 获取聊天记录
+        /// </summary>
+        /// <param name="cursor"></param>
+        /// <param name="limit"></param>
+        /// <returns></returns>
+        Task<EaseApiResultChatData> GetChatMessages(string ql,string cursor, int limit = 10);
     }
 }

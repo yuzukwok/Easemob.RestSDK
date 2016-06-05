@@ -48,5 +48,63 @@ namespace Easemob.RestSDK.Dto.Output
         public string nickname { get; set; }
     }
 
+    public class EaseApiResultChatData
+    {
+        public string action { get; set; }
+        public string application { get; set; }
+        public Params _params { get; set; }
+        public string path { get; set; }
+        public string uri { get; set; }
+        public ChatEntity[] entities { get; set; }
+        public long timestamp { get; set; }
+        public int duration { get; set; }
+        public string organization { get; set; }
+        public string applicationName { get; set; }
+        public string cursor { get; set; }
+        public int count { get; set; }
+    }
+    public class ChatEntity
+    {
+        public string uuid { get; set; }
+        public string type { get; set; }
+        public string from { get; set; }
+        public long created { get; set; }
+        public long modified { get; set; }
+        public string username { get; set; }
+        public string msg_id { get; set; }
+        public string to { get; set; }
+        public string chat_type { get; set; }
+        public string groupid { get; set; }
+        public Chatpayload payload { get; set; }
+        public long timestamp { get; set; }
+    }
 
+    public class Chatpayload
+    {
+        public ChatMsg[] bodies { get; set; }
+        public IDictionary<string, string> ext { get; set; }
+    }
+
+    public class ChatMsg
+    {
+        /// <summary>
+        /// 消息内容
+        /// </summary>
+        public string msg { get; set; }
+        /// <summary>
+        /// txt img loc audio四类
+        /// </summary>
+        public string type { get; set; }
+        /// <summary>
+        /// 语音时长
+        /// </summary>
+        public int length { get; set; }
+        public string url { get; set; }
+        public string secret { get; set; }
+        public float lat { get; set; }
+        public float lng { get; set; }
+        public string addr { get; set; }
+        public string filename { get; set; }
+
+    }
 }

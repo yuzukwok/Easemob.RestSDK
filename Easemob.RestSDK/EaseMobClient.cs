@@ -39,7 +39,8 @@ namespace Easemob.RestSDK
             this.appName = easeAppName;
             this.orgName = easeAppOrgName;
             this.client = new RestClient(easeMobUrl);
-            this.client.RemoveHandler("application/json");
+            //this.client.RemoveHandler("application/json");
+            this.client.ClearHandlers();
             this.client.AddHandler("application/json", new JsonNetDeserializer());
 
 
@@ -49,6 +50,7 @@ namespace Easemob.RestSDK
         {
             var token = await QueryToken();
             request.AddHeader("Authorization", "Bearer " + token);
+            
             var response = await client.ExecuteTaskAsync<T>(request);
             if (response.ErrorException != null)
             {
@@ -56,7 +58,7 @@ namespace Easemob.RestSDK
                 var twilioException = new EasemobApiException(message, response.ErrorException);
                 throw twilioException;
             }
-            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest|| response.StatusCode== System.Net.HttpStatusCode.NotFound)
+            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest|| response.StatusCode== System.Net.HttpStatusCode.NotFound||response.StatusCode== System.Net.HttpStatusCode.InternalServerError)
             {
                 var error = JsonConvert.DeserializeObject<ErrorOutput>(response.Content);
                 var twilioException = new EasemobApiException(error.error + "|" + error.error_description);
@@ -246,6 +248,24 @@ namespace Easemob.RestSDK
             var req = new RestRequest("chatgroups" , Method.POST);
             req.AddJsonBody(input);
             return await ExecuteAsync<EaseApiResultKvData>(req);
+        }
+
+        public async Task<EaseApiResultChatData> GetChatMessages(string ql,string cursor, int limit = 10)
+        {
+            var req = new RestRequest("chatmessages", Method.GET);
+            if (!string.IsNullOrEmpty(ql))
+            {
+                //空格替换成+
+                ql = ql.Replace(" ", "+");
+                req.AddQueryParameter("ql", ql);
+            }
+
+            req.AddQueryParameter("limit", limit.ToString());
+            if (!string.IsNullOrEmpty(cursor))
+            {
+                req.AddQueryParameter("cursor", cursor);
+            }
+            return await ExecuteAsync<EaseApiResultChatData>(req);
         }
     }
 }
