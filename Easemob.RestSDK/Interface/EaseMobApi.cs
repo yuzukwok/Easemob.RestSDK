@@ -153,7 +153,39 @@ namespace Easemob.RestSDK.Interface
         /// <param name="input"></param>
         /// <returns></returns>
         Task<EaseApiResultKvData> CreateChatGroup(CreateChatGroupInput input);
+        /// <summary>
+        ///  新增群聊成员
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        Task<EaseApiResultKvData> CreateChatGroupUser(string groupid, string username);
+        /// <summary>
+        ///  新增群聊成员
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        Task<EaseApiResultKvData> CreateChatGroupUserBatch(string groupid,CreateChatGroupUserInput input);
 
+        /// <summary>
+        ///  删除群聊成员
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        Task<EaseApiResultKvData> DelChatGroupUser(string groupid, string username);
+        /// <summary>
+        ///  删除群聊成员
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        Task<EaseApiResultKvData> DelChatGroupUserBatch(string groupid, string[] usernames);
+
+        /// <summary>
+        /// 修改群组信息
+        /// </summary>
+        /// <param name="groupid"></param>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        Task<EaseApiResultKvData> EditChatGroupInfo(string groupid, EditChatGroupInfoInput input);
         Task<CreateChatRoomOutput> CreateChatRoom(CreateChatRoomInput input);
         /// <summary>
         /// 获取聊天记录

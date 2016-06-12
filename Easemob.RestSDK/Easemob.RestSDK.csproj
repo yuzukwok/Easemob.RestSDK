@@ -53,7 +53,9 @@
     <Compile Include="Dto\Input\ChangeIMUserNicknameInput.cs" />
     <Compile Include="Dto\Input\ChangeUserPasswordInput.cs" />
     <Compile Include="Dto\Input\CreateChatGroup.cs" />
+    <Compile Include="Dto\Input\CreateChatGroupUserInput.cs" />
     <Compile Include="Dto\Input\CreateChatRoomInput.cs" />
+    <Compile Include="Dto\Input\EditChatGroupInfoInput.cs" />
     <Compile Include="Dto\Input\LoginModel.cs" />
     <Compile Include="Dto\Input\RegisterIMUserInput.cs" />
     <Compile Include="Dto\Output\CreateChatRoomOutput.cs" />

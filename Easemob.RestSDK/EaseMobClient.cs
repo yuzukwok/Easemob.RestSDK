@@ -267,5 +267,44 @@ namespace Easemob.RestSDK
             }
             return await ExecuteAsync<EaseApiResultChatData>(req);
         }
+
+        public async Task<EaseApiResultKvData> CreateChatGroupUser(string groupid, string username)
+        {
+            var req = new RestRequest("chatgroups/"+groupid+"/users/"+username, Method.POST);
+          
+            return await ExecuteAsync<EaseApiResultKvData>(req);
+        }
+
+        public async Task<EaseApiResultKvData> CreateChatGroupUserBatch(string groupid, CreateChatGroupUserInput input)
+        {
+            var req = new RestRequest("chatgroups/" + groupid + "/users", Method.POST);
+            req.AddJsonBody(input);
+            return await ExecuteAsync<EaseApiResultKvData>(req);
+        }
+
+        public async Task<EaseApiResultKvData> DelChatGroupUser(string groupid, string username)
+        {
+            var req = new RestRequest("chatgroups/" + groupid + "/users/"+username, Method.DELETE);
+            
+            return await ExecuteAsync<EaseApiResultKvData>(req);
+        }
+
+        public async Task<EaseApiResultKvData> DelChatGroupUserBatch(string groupid, string[] usernames)
+        {
+            var req = new RestRequest("chatgroups/" + groupid + "/users/" + string.Join(",",usernames), Method.DELETE);
+
+            return await ExecuteAsync<EaseApiResultKvData>(req);
+        }
+
+        public async Task<EaseApiResultKvData> EditChatGroupInfo(string groupid, EditChatGroupInfoInput input)
+        {
+            var req = new RestRequest("chatgroups/" + groupid , Method.PUT);
+            if (!string.IsNullOrEmpty(input.description))
+            {
+                input.description = input.description.Replace(" ", "+");
+            }
+            req.AddJsonBody(input);
+            return await ExecuteAsync<EaseApiResultKvData>(req);
+        }
     }
 }
