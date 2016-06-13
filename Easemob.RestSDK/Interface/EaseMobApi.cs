@@ -186,6 +186,16 @@ namespace Easemob.RestSDK.Interface
         /// <param name="input"></param>
         /// <returns></returns>
         Task<EaseApiResultKvData> EditChatGroupInfo(string groupid, EditChatGroupInfoInput input);
+
+        
+       /// <summary>
+       /// 获取群组信息
+       /// </summary>
+       /// <param name="groupid"></param>
+       /// <returns></returns>
+        Task<EaseApiResultGroupInfoData> GetChatGroupInfo(IList<string> groupid);
+
+
         Task<CreateChatRoomOutput> CreateChatRoom(CreateChatRoomInput input);
         /// <summary>
         /// 获取聊天记录

@@ -306,5 +306,12 @@ namespace Easemob.RestSDK
             req.AddJsonBody(input);
             return await ExecuteAsync<EaseApiResultKvData>(req);
         }
+
+        public async Task<EaseApiResultGroupInfoData> GetChatGroupInfo(IList<string> groupids)
+        {
+            var req = new RestRequest("chatgroups/" +  string.Join(",", groupids), Method.GET);
+
+            return await ExecuteAsync<EaseApiResultGroupInfoData>(req);
+        }
     }
 }

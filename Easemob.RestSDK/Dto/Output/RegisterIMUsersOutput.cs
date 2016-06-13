@@ -13,8 +13,34 @@ namespace Easemob.RestSDK.Dto.Output
     }
     public class EaseApiResultKvData : EaseApiResult
     {
-        public IDictionary<string,string> data { get; set; }
+        public IDictionary<string, string> data { get; set; }
     }
+
+    public class EaseApiResultGroupInfoData : EaseApiResult
+    {
+        public IList<GroupInfo> data { get; set; }
+    }
+
+    public class GroupInfo
+    {
+        public string id { get; set; }
+        public string name { get; set; }
+        public string description { get; set; }
+        public bool @public { get; set; }
+        public bool membersonly { get; set; }
+        public bool allowinvites { get; set; }
+        public int maxusers { get; set; }
+        public int affiliations_count { get; set; }
+        public Affiliation[] affiliations { get; set; }
+    }
+
+    public class Affiliation
+    {
+        public string owner { get; set; }
+        public string member { get; set; }
+    }
+
+
     public class EaseApiResult
     {
         public string action { get; set; }
