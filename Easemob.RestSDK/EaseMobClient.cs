@@ -166,7 +166,7 @@ namespace Easemob.RestSDK
 
         public async Task<EaseApiResult> AddBuddy(string ownerusername, string friendusername)
         {
-            var req = new RestRequest("users/" + ownerusername + "/contacts/users/"+friendusername, Method.PUT);
+            var req = new RestRequest("users/" + ownerusername + "/contacts/users/"+friendusername, Method.POST);
             return await ExecuteAsync<EaseApiResult>(req);
         }
         public async Task<EaseApiResult> DelBuddy(string ownerusername, string friendusername)
@@ -312,6 +312,13 @@ namespace Easemob.RestSDK
             var req = new RestRequest("chatgroups/" +  string.Join(",", groupids), Method.GET);
 
             return await ExecuteAsync<EaseApiResultGroupInfoData>(req);
+        }
+
+        public async Task<EaseApiResultKvData> SendMsg<T>(EaseMsg<T> msg) where T : Msg
+        {
+            var req = new RestRequest("messages", Method.POST);
+            req.AddJsonBody(msg);
+            return await ExecuteAsync<EaseApiResultKvData>(req);
         }
     }
 }

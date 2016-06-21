@@ -204,5 +204,15 @@ namespace Easemob.RestSDK.Interface
         /// <param name="limit"></param>
         /// <returns></returns>
         Task<EaseApiResultChatData> GetChatMessages(string ql,string cursor, int limit = 10);
+
+        #region 发送消息
+        /// <summary>
+        /// 发送消息
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="msg"></param>
+        /// <returns></returns>
+        Task<EaseApiResultKvData> SendMsg<T>(EaseMsg<T> msg)where T:Msg;
+        #endregion
     }
 }
