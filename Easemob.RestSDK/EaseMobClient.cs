@@ -55,7 +55,7 @@ namespace Easemob.RestSDK
             if (response.ErrorException != null)
             {
                 const string message = "Error retrieving response.  Check inner details for more info.";
-                var twilioException = new EasemobApiException(message, response.ErrorException);
+                var twilioException = new EasemobApiException(message, response.ErrorException);                
                 throw twilioException;
             }
             if (response.StatusCode == System.Net.HttpStatusCode.BadRequest|| response.StatusCode== System.Net.HttpStatusCode.NotFound||response.StatusCode== System.Net.HttpStatusCode.InternalServerError)

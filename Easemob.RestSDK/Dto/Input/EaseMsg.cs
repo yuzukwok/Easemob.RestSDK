@@ -23,11 +23,13 @@ namespace Easemob.RestSDK.Dto.Input
         /// 发送者
         /// </summary>
         public string from { get; set; }
+
+        public IDictionary<string, object> ext { get; set; }
     }
     public class Msg
     {
         public string type { get; internal set; }
-        public IDictionary<string, string> ext { get; set; }
+      
     }
     public class TextMsg:Msg
     {

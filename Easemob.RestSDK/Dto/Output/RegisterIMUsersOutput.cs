@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -108,7 +109,7 @@ namespace Easemob.RestSDK.Dto.Output
     public class Chatpayload
     {
         public ChatMsg[] bodies { get; set; }
-        public IDictionary<string, string> ext { get; set; }
+        public IDictionary<string, object> ext { get; set; }
     }
 
     public class ChatMsg
