@@ -2,6 +2,7 @@
 using Easemob.RestSDK.Dto.Output;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -213,6 +214,12 @@ namespace Easemob.RestSDK.Interface
         /// <param name="msg"></param>
         /// <returns></returns>
         Task<EaseApiResultKvData> SendMsg<T>(EaseMsg<T> msg)where T:Msg;
+
+
+
         #endregion
+        Task<EaseApiResult> UploadChatfiles(byte[] bytes, string filename);
+
+        Task<byte[]> DownloadChatfiles(string fileid,string sercet,bool thumb=false);
     }
 }

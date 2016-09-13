@@ -9,6 +9,7 @@ using Easemob.RestSDK.Dto.Output;
 using System.Runtime.Caching;
 using Easemob.RestSDK.Interface;
 using Newtonsoft.Json;
+using System.IO;
 
 namespace Easemob.RestSDK
 {
@@ -319,6 +320,28 @@ namespace Easemob.RestSDK
             var req = new RestRequest("messages", Method.POST);
             req.AddJsonBody(msg);
             return await ExecuteAsync<EaseApiResultKvData>(req);
+        }
+
+        public async Task<EaseApiResult> UploadChatfiles(byte[] bytes,string filename)
+        {
+            var req = new RestRequest("chatfiles" , Method.POST);
+            req.AddHeader("restrict-access", "true");          
+            req.AddFile("file",bytes,filename, "multipart/form-data");
+            return await ExecuteAsync<EaseApiResult>(req);
+        }
+
+        public async Task<byte[]> DownloadChatfiles(string fileid,string sharesecret,bool thumb)
+        {
+            var req = new RestRequest("chatfiles/" + fileid, Method.GET);            
+            req.AddHeader("share-secret", sharesecret);
+            var token = await QueryToken();
+            req.AddHeader("Authorization", "Bearer " + token);
+            req.AddHeader("Accept", "application/octet-stream");
+            if (thumb)
+            {
+                req.AddHeader("thumbnail", "true");
+            }
+            return  client.DownloadData(req);
         }
     }
 }

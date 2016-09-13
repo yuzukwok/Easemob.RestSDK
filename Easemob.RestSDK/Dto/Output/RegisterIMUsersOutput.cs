@@ -73,6 +73,8 @@ namespace Easemob.RestSDK.Dto.Output
         public bool activated { get; set; }
         public string device_token { get; set; }
         public string nickname { get; set; }
+        [Newtonsoft.Json.JsonProperty("share-secret")]
+        public string share_secret {get;set;}
     }
 
     public class EaseApiResultChatData
